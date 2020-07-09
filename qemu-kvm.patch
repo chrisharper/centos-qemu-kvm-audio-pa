@@ -1,0 +1,45 @@
+--- rpmbuild/SPECS/qemu-kvm.spec	2020-05-06 17:00:16.000000000 +0100
++++ qemu-kvm.spec	2020-07-09 12:21:58.097940334 +0100
+@@ -740,6 +740,9 @@
+ # qemu-keymap
+ BuildRequires: pkgconfig(xkbcommon)
+ 
++# qemu-pa
++BuildREquires: pulseaudio-libs-devel
++
+ # For s390-pgste flag
+ %ifarch s390x
+ BuildRequires: binutils >= 2.27-16
+@@ -926,6 +929,13 @@
+ Install this package if you want to access remote disks using
+ the Secure Shell (SSH) protocol.
+ 
++%package  audio-pa
++Summary: QEMU Pulseaudio audio driver
++Requires: %{name}-common%{?_isa} = %{epoch}:%{version}-%{release}
++
++%description audio-pa
++This package provides the additional Pulseaudio audio driver for QEMU.
++
+ 
+ %prep
+ %setup -n qemu-%{version}
+@@ -1014,7 +1024,7 @@
+   --python=%{__python3} \
+   --target-list="%{buildarch}" \
+   --block-drv-rw-whitelist=%{block_drivers_list} \
+-  --audio-drv-list= \
++  --audio-drv-list=pa \
+   --block-drv-ro-whitelist=vmdk,vhdx,vpc,https,ssh \
+   --with-coroutine=ucontext \
+   --tls-priority=NORMAL \
+@@ -1574,6 +1584,9 @@
+ %files block-ssh
+ %{_libdir}/qemu-kvm/block-ssh.so
+ 
++%files audio-pa
++%{_libdir}/qemu-kvm/audio-pa.so
++
+ 
+ %changelog
+ * Tue Apr 14 2020 Danilo Cesar Lemes de Paula <ddepaula@redhat.com> - 4.2.0-19.el8_2

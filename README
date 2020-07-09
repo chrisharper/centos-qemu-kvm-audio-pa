@@ -1,0 +1,16 @@
+Pulseaudio driver for qemu-kvm on Centos8 rebuilt from latest qemu-kvm source at 
+https://cbs.centos.org/koji/packageinfo?packageID=7851
+
+Above is the newer libvirt/qemu builds for the AdvancedVirtualisation repo used on ovirt/openstack
+
+    dnf install rpm-build
+    yum install https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm
+    dnf config-manager --set-enabled PowerTools
+    rpm -i *.src.rpm
+    patch rpmbuild/SPECS/qemu-kvm.spec qemu-kvm.patch 
+
+    cd rpmbuild/SPECS
+    dnf builddep qemu-kvm.spec
+    rpmbuild -ba qemu-kvm.spec
+    cd ../RPMS/x86_64
+
